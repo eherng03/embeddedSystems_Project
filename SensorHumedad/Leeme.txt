@@ -1,0 +1,3 @@
+VCC -> 5V
+DATA -> PIN 7
+GND -> GND
