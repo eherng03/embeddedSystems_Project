@@ -15,13 +15,13 @@
 		}
 
 		/**
-		Cambia el estado de las luces de la habitacion place
+		* Cambia el valor de la humedad de place
 		*/
-		function changeStatus($state, $place){
+		function changeStatus($value, $place){
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("UPDATE humidity SET state = '$state' WHERE location = '$place'");
+			$query = $connection->query("UPDATE humidity SET value = '$value' WHERE location = '$place'");
 			return $query;
 		}
 

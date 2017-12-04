@@ -3,7 +3,7 @@
 
 
 	//Clase que controla la tabla de luces de la base de datos
-	class PresenceDBController{
+	class TemperatureDBController{
 		private static $instance;
 		private function __construct(){}
 		
@@ -15,15 +15,14 @@
 		}
 
 		/**
-		* Cambia el estado de presencia habitacion place
+		* Cambia el estado de la presencia de humo o gas de la habitacion place
 		*/
 		function changeStatus($state, $place){
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("UPDATE presence SET state = '$state' WHERE location = '$place'");
+			$query = $connection->query("UPDATE temperature SET state = '$state' WHERE location = '$place'");
 			return $query;
 		}
-
 	}
 ?>

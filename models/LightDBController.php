@@ -15,7 +15,7 @@
 		}
 
 		/**
-		Cambia el estado de las luces de la habitacion place
+		* Cambia el estado de las luces de la habitacion place
 		*/
 		function changeStatus($state, $place){
 			$dbManager = DBManager::getInstance();

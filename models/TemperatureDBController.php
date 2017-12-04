@@ -15,13 +15,13 @@
 		}
 
 		/**
-		Cambia el estado de las luces de la habitacion place
+		* Cambia el valor de la temperatura de place
 		*/
-		function changeStatus($state, $place){
+		function changeStatus($value, $place){
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("UPDATE temperature SET state = '$state' WHERE location = '$place'");
+			$query = $connection->query("UPDATE temperature SET value = '$value' WHERE location = '$place'");
 			return $query;
 		}
 	}
