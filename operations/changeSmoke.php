@@ -3,10 +3,10 @@
     include "../models/SmokeDBController.php";
    
     $place = $_GET["place"];
-    $humi = $_GET["status"];
+    $humi = $_GET["state"];
 
     $controller = SmokeDBController::getInstance();
    
-    $result = $controller->changeStatus($status, $place);
+    $result = $controller->changeStatus($state, $place);
     
 ?>
