@@ -3,7 +3,7 @@
 
 
 	//Clase que controla la tabla de luces de la base de datos
-	class TemperatureDBController{
+	class SmokeDBController{
 		private static $instance;
 		private function __construct(){}
 		
@@ -24,5 +24,7 @@
 			$query = $connection->query("UPDATE temperature SET state = '$state' WHERE location = '$place'");
 			return $query;
 		}
+
+
 	}
 ?>
