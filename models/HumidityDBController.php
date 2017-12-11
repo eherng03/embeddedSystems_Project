@@ -2,7 +2,7 @@
 	include_once "../dataBase/DBManager.php";
 
 
-	//Clase que controla la tabla de luces de la base de datos
+	//Clase que controla la tabla de humedad de la base de datos
 	class HumidityDBController{
 		private static $instance;
 		private function __construct(){}
@@ -15,15 +15,14 @@
 		}
 
 		/**
-		* Cambia el valor de la humedad de place
+		Inserta el dato de humedad de la habitacion place
 		*/
-		function changeStatus($value, $place){
+		function changeStatus($humi, $place){
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("UPDATE humidity SET value = '$value' WHERE location = '$place'");
+			$query = $connection->query("INSERT INTO humidity (place, date, value) VALUES ('$place', CURRENT_TIMESTAMP, '$humi')");
 			return $query;
 		}
-
 	}
 ?>

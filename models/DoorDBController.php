@@ -2,7 +2,7 @@
 	include_once "../dataBase/DBManager.php";
 
 
-	//Clase que controla la tabla de luces de la base de datos
+	//Clase que controla la tabla de puerta de la base de datos
 	class DoorDBController{
 		private static $instance;
 		private function __construct(){}
@@ -15,13 +15,24 @@
 		}
 
 		/**
-		* Cambia el estado de la puerta del place
+		Cambia el estado de las luces del lugar place
 		*/
 		function changeStatus($state, $place){
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("UPDATE door SET state = '$state' WHERE location = '$place'");
+			$query = $connection->query("UPDATE door SET state = '$state' WHERE place = '$place'");
+			return $query;
+		}
+
+		/**
+		Cambia el estado de las luces del lugar place
+		*/
+		function checkStatus($place){
+			$dbManager = DBManager::getInstance();
+			$connection = $dbManager->getConnection();
+
+			$query = $connection->query("SELECT state FROM door WHERE place = '$place'");
 			return $query;
 		}
 
