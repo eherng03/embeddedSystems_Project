@@ -22,15 +22,15 @@ void setup() {
 }
 
 void loop() {  
-  float status;
+  float state;
   String place = "kitchen";
 
  if (digitalRead(DOPin) ==HIGH){
     digitalWrite(ledPin, LOW);
-    status = 0;
+    state = 0;
   }else {
     digitalWrite(ledPin, HIGH);
-    status = 1;
+    state = 1;
   }
   delay(1000);
   
@@ -43,10 +43,10 @@ void loop() {
   }
 
   String url = "/IntelliHome/operations/changeSmoke.php?";
-  String dato1 = "status =";
+  String dato1 = "&state =";
   String dato2 = "&place =";
 
-  client.print(String("GET ") + url + dato1 + status + dato2 + place + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Coneccion: Cerrada\r\n\r\n");
+  client.print(String("GET ") + url + dato1 + state + dato2 + place + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Coneccion: Cerrada\r\n\r\n");
 
 
   unsigned long timeout = millis();
