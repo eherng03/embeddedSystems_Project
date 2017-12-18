@@ -2,7 +2,7 @@
 	include_once "../dataBase/DBManager.php";
 
 
-	//Clase que controla la tabla de luces de la base de datos
+	//Clase que controla la tabla de humo de la base de datos
 	class SmokeDBController{
 		private static $instance;
 		private function __construct(){}
@@ -15,16 +15,14 @@
 		}
 
 		/**
-		* Cambia el estado de la presencia de humo o gas de la habitacion place
+		Inserta un nuevo dato de humo de la habitacion place
 		*/
 		function changeStatus($state, $place){
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("UPDATE temperature SET state = '$state' WHERE location = '$place'");
+			$query = $connection->query("UPDATE smoke SET status = $state, date = CURRENT_TIMESTAMP WHERE place = '$place'");
 			return $query;
 		}
-
-
 	}
 ?>
