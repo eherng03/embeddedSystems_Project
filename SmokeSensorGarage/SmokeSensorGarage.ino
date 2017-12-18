@@ -1,67 +1,72 @@
 #include <DHT11.h>
 #include <ESP8266WiFi.h>
 
-DHT11 dht11(D4);
 const char* ssid = "rasp";
 const char* password = "raspberry";
 const char* host = "192.168.43.247";
+int DOPin = 2;
 
-int DOPin = 2; // select the pin for the LED
-int ledPin =13;
+void setup()
+{
+pinMode(DOPin, INPUT);
+Serial.begin(9600);
+Serial.print("Conectando a: ");
+Serial.println(ssid);
+WiFi.begin(ssid, password);
+while (WiFi.status() != WL_CONNECTED) {
+delay(500);
+Serial.print(".");
+}
+Serial.println("WiFi conectado");
+Serial.println("IP: ");
+Serial.println(WiFi.localIP());
+}
+void loop()
+{
+int err;
+float temp, hum;
+String place = "garage";
+int state;
 
-void setup() {
-  // declare the ledPin as an OUTPUT:
-  pinMode(DOPin, INPUT);
-  pinMode(ledPin, OUTPUT);
-  Serial.begin(9600);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
+if (digitalRead(DOPin) ==HIGH){
+   state = 0;
+}else {
+   state = 1;
+}
+Serial.print(state);
+Serial.print(place);
+Serial.print("conectando a: ");
+Serial.println(host);
+WiFiClient client;
+const int httpPort = 80;
+if (!client.connect(host, httpPort)) {
+Serial.println("Coneccion Fallida");
+return;
+}
+String url = "/IntelliHome/operations/changeSmoke.php?";
+String dato1 = "state=";
+String dato3 = "&place=";
+Serial.print("Obteniendo URL: ");
+Serial.println(url);
+//Creamos la peticion al servidor
+client.print(String("GET ") + url + dato1 + state + dato3 + place + " HTTP/1.1\r\n" +
+"Host: " + host + "\r\n" +
+"Coneccion: Cerrada\r\n\r\n");
+unsigned long timeout = millis();
+while (client.available() == 0) {
+if (millis() - timeout > 5000) {
+Serial.println(">>> Se acabo el tiempo de espera !");
+client.stop();
+return;
+}
+}
+//Imprimimos lo que nos devuelve el servidor
+while (client.available()) {
+String line = client.readStringUntil('\r');
+Serial.print(line);
 }
 
-void loop() {  
-  float state;
-  String place = "garage";
-
- if (digitalRead(DOPin) ==HIGH){
-    digitalWrite(ledPin, LOW);
-    state = 0;
-  }else {
-    digitalWrite(ledPin, HIGH);
-    state = 1;
-  }
-  delay(1000);
-  
-
-  WiFiClient client;
-  const int httpPort = 80;
-  if (!client.connect(host, httpPort)) {
-    Serial.println("Coneccion Fallida");
-    return;
-  }
-
-  String url = "/IntelliHome/operations/changeSmoke.php?";
-  String dato1 = "&state =";
-  String dato2 = "&place =";
-
-  client.print(String("GET ") + url + dato1 + state + dato2 + place + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Coneccion: Cerrada\r\n\r\n");
-
-
-  unsigned long timeout = millis();
-  while (client.available() == 0) {
-    if (millis() - timeout > 5000) {
-    Serial.println(">>> Se acabo el tiempo de espera !");
-    client.stop();
-    return;
-  }
-
-  //Imprimimos lo que nos devuelve el servidor
-  while (client.available()) {
-    String line = client.readStringUntil('\r');
-    Serial.print(line);
-  }
-
-  delay(3000);
+Serial.println();
+Serial.println("Cerrando Conexión");
+delay(3000);
 }
