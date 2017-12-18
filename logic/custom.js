@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 
 	//Comprueba el estado de las luces para actualizar el estado del interruptor
-	$.get( "operations/checkLightStatus.php", { place: "room"} )
+	$.get( "operations/getLightStatus.php", { place: "room"} )
 	  .done(function( data ) {
 	  	var datos = JSON.parse(data);
 	  	var state = datos.state;
@@ -15,7 +15,7 @@ $(document).ready(function() {
 	 });
 
 	//Comprueba el estado de las luces para actualizar el estado del interruptor
-	$.get( "operations/checkLightStatus.php", { place: "bathroom"} )
+	$.get( "operations/getLightStatus.php", { place: "bathroom"} )
 	  .done(function( data ) {
 	  	var datos = JSON.parse(data);
 	  	var state = datos.state;
@@ -29,7 +29,7 @@ $(document).ready(function() {
 
 
 	//Comprueba el estado de las luces para actualizar el estado del interruptor
-	$.get( "operations/checkLightStatus.php", { place: "garage"} )
+	$.get( "operations/getLightStatus.php", { place: "garage"} )
 	  .done(function( data ) {
 	  	var datos = JSON.parse(data);
 	  	var state = datos.state;
@@ -42,7 +42,7 @@ $(document).ready(function() {
 	 });
 
 	 //Comprueba el estado de las luces para actualizar el estado del interruptor
-	$.get( "operations/checkLightStatus.php", { place: "kitchen"} )
+	$.get( "operations/getLightStatus.php", { place: "kitchen"} )
 	  .done(function( data ) {
 	  	var datos = JSON.parse(data);
 	  	var state = datos.state;
