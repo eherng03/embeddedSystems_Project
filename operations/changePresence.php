@@ -1,11 +1,11 @@
 <?php
 
-    include "../models/SmokeDBController.php";
+    include "../models/PresenceDBController.php";
    
     $place = $_GET["place"];
     $state = $_GET["state"];
 
-    $controller = SmokeDBController::getInstance();
+    $controller = PresenceDBController::getInstance();
    
     $result = $controller->changeStatus($state, $place);
     
