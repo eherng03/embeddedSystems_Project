@@ -45,16 +45,30 @@
             </div>
 
             <ul class="nav">
-                <li class="active">
+                <li>
                     <a href="index.html">
                         <i class="ti-home"></i>
                         <p>Inicio</p>
                     </a>
                 </li>
+                <li  class="active">
+                    <a href="room.html">
+                        <p><img src="assets/icons/bed-orange.png" alt="bedroom" style="float:left;width:30px;height:30px;">Habitación</p>
+                    </a>
+                </li>
                 <li>
-                    <a href="estadisticas.html">
-                        <i class="ti-pie-chart"></i>
-                        <p>Estadísticas</p>
+                    <a href="kitchen.html">
+                        <p><img src="assets/icons/kitchen-orange.png" alt="bedroom" style="float:left;width:30px;height:30px;">Cocina</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="bathroom.html">
+                        <p> <img src="assets/icons/diarrhea-orange.png" alt="Bathroom" style="float:left;width:30px;height:30px;">  Baño</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="garage.html">
+                        <p> <img src="assets/icons/garage-orange.png" alt="garage" style="float:left;width:30px;height:30px;">  Garaje</p>
                     </a>
                 </li>
 
@@ -136,12 +150,22 @@
     <dir class="row container-fluid">
              <div class="col-lg-12 col-md-12">
                 <div class="card">
-                    <div class="content">
-                        <div class ="row">
-                            <div class="col-lg-5 col-md-5 col-xs-5">
-                                <h3>Presencia</h3>
-                            </div>
-                        </div>
+                    <div class = "header">
+                        <h4 class="title">Presencia</h4>
+                        <p class="category">A continuación se muestran las horas a las que se ha detectado presencia</p>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Fecha y hora</th>
+                                </tr>
+                            </thead>
+                            <tbody id="presenceRoom">
+                                //Se insertaran las horas de forma dinamica
+                            </tbody>
+                        </table>
+                                    
                     </div>
                 </div>
             </div>
