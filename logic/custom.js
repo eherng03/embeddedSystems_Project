@@ -1,6 +1,10 @@
 $(document).ready(function() {
 
+/**
 
+LIGHT
+
+**/
 	//Comprueba el estado de las luces para actualizar el estado del interruptor
 	$.get( "operations/getLightStatus.php", { place: "room"} )
 	  .done(function( data ) {
@@ -167,6 +171,12 @@ $(document).ready(function() {
 	    }
 	});
 
+/**
+
+DOOR
+
+**/
+
 	// Actualizar el estado de la puerta del garage
 	$("#doorSwitchGar").change(function() {
 	    if($(this).is(":checked")) {
@@ -191,5 +201,19 @@ $(document).ready(function() {
         	});
 	    }
 	});
+
+/**
+
+PRESENCE
+
+**/
+	$.get( "operations/getPresenceInfo.php", { place: "room"} )
+  .done(function( data ) {
+  	var datos = JSON.parse(data);
+  	var date = datos.date;
+
+    //TODO imprimir en tabla los datos de presencia
+ });
+
 });
 
