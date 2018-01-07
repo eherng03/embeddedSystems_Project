@@ -24,5 +24,16 @@
 			$query = $connection->query("INSERT INTO presence (status, date, place) VALUES ($state, CURRENT_TIMESTAMP, '$place')");
 			return $query;
 		}
+		
+		/**
+		Devuelve las horas a las que se ha detectado presencia
+		*/
+		function getInfo($place){
+			$dbManager = DBManager::getInstance();
+			$connection = $dbManager->getConnection();
+
+			$query = $connection->query("SELECT 'date' FROM presence WHERE place = '$place' AND status = '1'");
+			return $query;
+		}
 	}
 ?>
