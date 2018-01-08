@@ -43,7 +43,7 @@ void loop()
     return;
   }
   
-  String url = "/IntelliHome/operations/getLightStatusArduino.php?place=room";
+  String url = "/IntelliHome/operations/getLightStatus.php?place=room";
  
   Serial.print("Obteniendo URL: ");
   Serial.println(url);
