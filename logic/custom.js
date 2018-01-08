@@ -8,8 +8,7 @@ LIGHT
 	//Comprueba el estado de las luces para actualizar el estado del interruptor
 	$.get( "operations/getLightStatus.php", { place: "room"} )
 	  .done(function( data ) {
-	  	var datos = JSON.parse(data);
-	  	var state = datos.state;
+	  	var state = JSON.parse(data);
 
 	    if(state == 1){
         	$("#lightSwitchRoom").attr("checked", true);
@@ -21,8 +20,7 @@ LIGHT
 	//Comprueba el estado de las luces para actualizar el estado del interruptor
 	$.get( "operations/getLightStatus.php", { place: "bathroom"} )
 	  .done(function( data ) {
-	  	var datos = JSON.parse(data);
-	  	var state = datos.state;
+	  	var state = JSON.parse(data);
 
 	    if(state == 1){
         	$("#lightSwitchBath").attr("checked", true);
@@ -35,8 +33,7 @@ LIGHT
 	//Comprueba el estado de las luces para actualizar el estado del interruptor
 	$.get( "operations/getLightStatus.php", { place: "garage"} )
 	  .done(function( data ) {
-	  	var datos = JSON.parse(data);
-	  	var state = datos.state;
+	  	var state = JSON.parse(data);
 
 	    if(state == 1){
         	$("#lightSwitchGar").attr("checked", true);
@@ -48,8 +45,7 @@ LIGHT
 	 //Comprueba el estado de las luces para actualizar el estado del interruptor
 	$.get( "operations/getLightStatus.php", { place: "kitchen"} )
 	  .done(function( data ) {
-	  	var datos = JSON.parse(data);
-	  	var state = datos.state;
+	  	var state = JSON.parse(data);
 
 	    if(state == 1){
         	$("#lightSwitchKit").attr("checked", true);
@@ -58,18 +54,6 @@ LIGHT
         }
 	 });
 
-	 //Compruebo el estado de la puerta para actualiza el estado del interruptor
-	$.get( "operations/checkDoorStatus.php", { place: "garage"} )
-	  .done(function( data ) {
-	  	var datos = JSON.parse(data);
-	  	var state = datos.state;
-
-	    if(state == 1){
-        	$("#doorSwitchGar").attr("checked", true);
-        }else if(state == 0){
-        	$("#doorSwitchGar").attr("checked", false);
-        }
-	 });
 
 	//Encender y apagar la luz de la habitación
 	$("#lightSwitchRoom").change(function() {
@@ -177,6 +161,18 @@ DOOR
 
 **/
 
+	 //Compruebo el estado de la puerta para actualiza el estado del interruptor
+	$.get( "operations/getDoorStatus.php", { place: "garage"} )
+	  .done(function( data ) {
+	  	var state = JSON.parse(data);
+
+	    if(state == 1){
+        	$("#doorSwitchGar").attr("checked", true);
+        }else if(state == 0){
+        	$("#doorSwitchGar").attr("checked", false);
+        }
+	 });
+	  
 	// Actualizar el estado de la puerta del garage
 	$("#doorSwitchGar").change(function() {
 	    if($(this).is(":checked")) {
@@ -196,7 +192,7 @@ DOOR
 	            data: {"state": "0", "place": "garage"},
 	            
 	            success: function(data){
-	                alert("Se ha apagado la luz");
+	                alert("Se ha cerrado la puerta");
 	            }
         	});
 	    }
