@@ -2,9 +2,9 @@
 #include <ESP8266WiFi.h>
 
 //Configuración de la red wifi y el host donde está el servidor
-const char* ssid = "Orange-1596";
-const char* password = "qRbTqHWkZEbZr";
-const char* host = "192.168.1.106";
+const char* ssid = "rasp";
+const char* password = "raspberry";
+const char* host = "192.168.43.247";
 
 const int LED = 16;
 
@@ -48,9 +48,7 @@ void loop()
   Serial.print("Obteniendo URL: ");
   Serial.println(url);
   //Creamos la peticion al servidor
-  client.println(String("GET ") + url + " HTTP/1.1\r\n");
-  client.println(String("Host: ") + host);
-  client.println("Conection: close");
+  client.println(String("GET ") + url);
   
   unsigned long timeout = millis();
   while (client.available() == 0) {
@@ -63,12 +61,20 @@ void loop()
   
   //Imprimimos lo que nos devuelve el servidor
   while (client.available()) {
-    //char* stat = client.read();  //En stat guardamos lo que nos devuelve la llamada a la bbdd
+    int stat = client.read();  //En stat guardamos lo que nos devuelve la llamada a la bbdd
+    if(stat == 49){
+      digitalWrite(LED, HIGH);
+    }else if(stat == 48){
+        digitalWrite(LED, LOW);
+    }
+      
+    Serial.print("Este es el dato: ");
     Serial.print(client.read());
     //digitalWrite(LED, atoi(stat));
+    delay(3000);
   }
 
   Serial.println();
   Serial.println("Cerrando Conexión");
-  delay(30000);
+  delay(3000);
 }
