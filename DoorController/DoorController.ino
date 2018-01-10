@@ -11,7 +11,7 @@ Servo servoMotor;
 
 void setup() {
 
-  servoMotor.attach(5);
+  servoMotor.attach(2);
   
   Serial.begin(9600);
   Serial.print("Conectando a: ");
@@ -43,7 +43,7 @@ void loop()
     return;
   }
   
-  String url = "/IntelliHome/operations/getDoorStatus";
+  String url = "/IntelliHome/operations/getDoorStatus.php?place=garage";
  
   Serial.print("Obteniendo URL: ");
   Serial.println(url);
