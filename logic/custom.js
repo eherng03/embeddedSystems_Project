@@ -205,11 +205,19 @@ PRESENCE
 **/
 	$.get( "operations/getPresenceInfo.php", { place: "room"} )
   .done(function( data ) {
-  	var datos = JSON.parse(data);
-  	var date = datos.date;
+  	var date = JSON.parse(data);
+  	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
+  	var tabla = document.getElementById("presenceRoomTable");
 
-    //TODO imprimir en tabla los datos de presencia
- });
+  	date.forEach((fecha) =>{
+            var row = document.createElement('tr');
+           	var td = document.createElement('td');
+            td.innerHTML = fecha;
+            row.appendChild(td);
+            tabla.appendChild(row);
+        });
+
+ 	});
 
 });
 
