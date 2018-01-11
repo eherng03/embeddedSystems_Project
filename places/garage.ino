@@ -49,15 +49,15 @@ void loop()
   String urlLight = "/IntelliHome/operations/getLightStatus.php?place=garage";
 
   Serial.print("Obteniendo URL: ");
-    Serial.println(urlLight);
-    //Creamos la peticion al servidor
-    client.println(String("GET ") + urlLight);
+  Serial.println(urlLight);
+  //Creamos la peticion al servidor
+  client.println(String("GET ") + urlLight);
     
-    unsigned long timeout1 = millis();
+  unsigned long timeout1 = millis();
   while (client.available() == 0) {
     if (millis() - timeout1 > 5000) {
       Serial.println(">>> Se acabo el tiempo de espera puerta !");
-      //client.stop();
+      client.stop();
       return;
     }
   }
@@ -72,15 +72,31 @@ void loop()
     }
     Serial.println("Este es el dato:");
     Serial.println(stat1);
-    delay(300);
-    break;
  }
- 
+
+
+ if (!client.connect(host, httpPort)) {
+    Serial.println("Coneccion Fallida");
+    return;
+  }
+  
+  client.flush();
+
+  Serial.print("Estado del cliente: " + client.connected());
+  
   Serial.print("Obteniendo URL: ");
   Serial.println(url);
   //Creamos la peticion al servidor
   client.println(String("GET ") + url);
-  
+
+  unsigned long timeout = millis();
+  while (client.available() == 0) {
+    if (millis() - timeout > 5000) {
+      Serial.println(">>> Se acabo el tiempo de espera puerta !");
+      client.stop();
+      return;
+    }
+  }
   
   //Imprimimos lo que nos devuelve el servidor
   while (client.available()) {
@@ -92,7 +108,6 @@ void loop()
     }
     Serial.println("Este es el dato:");
     Serial.println(stat);
-    delay(300);
   
   }
 
