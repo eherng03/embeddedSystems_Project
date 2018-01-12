@@ -24,5 +24,16 @@
 			$query = $connection->query("INSERT INTO humidity (place, date, value) VALUES ('$place', CURRENT_TIMESTAMP, '$humi')");
 			return $query;
 		}
+
+		/**
+		Devuelve las temperatura de un determinado sitio
+		*/
+		function getInfo($place){
+			$dbManager = DBManager::getInstance();
+			$connection = $dbManager->getConnection();
+
+			$query = $connection->query("SELECT * FROM humidity WHERE place = '$place'");
+			return $query;
+		}
 	}
 ?>

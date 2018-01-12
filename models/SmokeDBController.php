@@ -24,5 +24,16 @@
 			$query = $connection->query("UPDATE smoke SET status = $state, date = CURRENT_TIMESTAMP WHERE place = '$place'");
 			return $query;
 		}
+
+		/**
+		Devuelve las horas a las que se ha detectado presencia
+		*/
+		function getInfo($place){
+			$dbManager = DBManager::getInstance();
+			$connection = $dbManager->getConnection();
+
+			$query = $connection->query("SELECT * FROM smoke WHERE place = '$place' AND status = '1'");
+			return $query;
+		}
 	}
 ?>
