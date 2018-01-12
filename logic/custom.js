@@ -219,6 +219,62 @@ PRESENCE
 
  	});
 
+  $.get( "operations/getPresenceInfo.php", { place: "garage"} )
+  .done(function( data ) {
+  	var date = JSON.parse(data);
+  	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
+  	var tabla = document.getElementById("presenceGarageTable");
+
+  	date.forEach((fecha) =>{
+            var row = document.createElement('tr');
+           	var td = document.createElement('td');
+            td.innerHTML = fecha;
+            row.appendChild(td);
+            tabla.appendChild(row);
+        });
+
+ 	});
+
+
+  /**
+
+SMOKE
+
+**/
+	$.get( "operations/getSmokeInfo.php", { place: "kitchen"} )
+  .done(function( data ) {
+  	var date = JSON.parse(data);
+  	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
+  	var tabla = document.getElementById("kitchenSmokeTable");
+
+  	date.forEach((fecha) =>{
+            var row = document.createElement('tr');
+           	var td = document.createElement('td');
+            td.innerHTML = fecha;
+            row.appendChild(td);
+            tabla.appendChild(row);
+        });
+
+ 	});
+
+  $.get( "operations/getSmokeInfo.php", { place: "garage"} )
+  .done(function( data ) {
+  	var date = JSON.parse(data);
+  	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
+  	var tabla = document.getElementById("garageSmokeTable");
+
+  	date.forEach((fecha) =>{
+            var row = document.createElement('tr');
+           	var td = document.createElement('td');
+            td.innerHTML = fecha;
+            row.appendChild(td);
+            tabla.appendChild(row);
+        });
+
+ 	});
+
+  /**
+
   /**
 
 TEMPERATURE
@@ -229,7 +285,7 @@ TEMPERATURE
   	var temp = JSON.parse(data);
   	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
   	var label = document.getElementById("kitchenTemp");
-  	var string = temp + "ºC";
+  	var string = "Temperatura: " + temp + "ºC";
   	label.innerHTML = string;
 
  	});
@@ -239,7 +295,32 @@ TEMPERATURE
   	var temp = JSON.parse(data);
   	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
   	var label = document.getElementById("bathTemp");
-  	var string = temp + "ºC";
+  	var string = "Temperatura: " + temp + "ºC";
+  	label.innerHTML = string;
+
+ 	});
+
+    /**
+
+humedad
+
+**/
+	$.get( "operations/getHumidity.php", { place: "kitchen"} )
+  .done(function( data ) {
+  	var temp = JSON.parse(data);
+  	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
+  	var label = document.getElementById("kitchenHum");
+  	var string = "Humedad: " + temp + "%";
+  	label.innerHTML = string;
+
+ 	});
+
+  $.get( "operations/getHumidity.php", { place: "bathroom"} )
+  .done(function( data ) {
+  	var hum = JSON.parse(data);
+  	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
+  	var label = document.getElementById("bathHum");
+  	var string = "Humedad: " + hum + "%";
   	label.innerHTML = string;
 
  	});
