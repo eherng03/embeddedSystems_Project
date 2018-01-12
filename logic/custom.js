@@ -219,5 +219,30 @@ PRESENCE
 
  	});
 
+  /**
+
+TEMPERATURE
+
+**/
+	$.get( "operations/getTemperature.php", { place: "kitchen"} )
+  .done(function( data ) {
+  	var temp = JSON.parse(data);
+  	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
+  	var label = document.getElementById("kitchenTemp");
+  	var string = temp + "ºC";
+  	label.innerHTML = string;
+
+ 	});
+
+  $.get( "operations/getTemperature.php", { place: "bathroom"} )
+  .done(function( data ) {
+  	var temp = JSON.parse(data);
+  	//LOS DATOS SE PROCESAN MAL; NO COMO FECHAS
+  	var label = document.getElementById("bathTemp");
+  	var string = temp + "ºC";
+  	label.innerHTML = string;
+
+ 	});
+
 });
 
