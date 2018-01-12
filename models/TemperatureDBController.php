@@ -21,8 +21,9 @@
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("INSERT INTO temperature (place, date, value) VALUES ('$place', CURRENT_TIMESTAMP, '$temp')");
+			$query = $connection->query("UPDATE temperature SET value = $temp, date = CURRENT_TIMESTAMP WHERE place = '$place'");
 			return $query;
+
 		}
 	}
 ?>
