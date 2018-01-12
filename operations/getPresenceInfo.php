@@ -4,7 +4,7 @@
 
 	$place = $_GET['place'];
 
-	
+	setlocale(LC_ALL,"esp");
 
 	$controller = PresenceDBController::getInstance();
 
@@ -13,7 +13,9 @@
 	$date = array();
     //guardados todos los datos como object destino
     while($row = $result->fetch_array()){
-         array_push($date, $row['date']);
+
+    	$fecha = date("d/m/Y H:i:s", strtotime($row['date']));
+        array_push($date, $fecha);
     }
     //devuelve horas al js
     echo json_encode($date);
