@@ -25,5 +25,16 @@
 			return $query;
 
 		}
+
+		/**
+		Devuelve las temperatura de un determinado sitio
+		*/
+		function getInfo($place){
+			$dbManager = DBManager::getInstance();
+			$connection = $dbManager->getConnection();
+
+			$query = $connection->query("SELECT * FROM temperature WHERE place = '$place'");
+			return $query;
+		}
 	}
 ?>
