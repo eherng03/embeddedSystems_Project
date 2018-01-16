@@ -11,6 +11,7 @@ Servo servoMotor;
 const int LED = 16;
 int SmokePin = 5;
 int PresencePin = 4;
+int Zumbador = 14;
 
 void setup() {
 
@@ -18,6 +19,7 @@ void setup() {
   pinMode(LED, OUTPUT);
   servoMotor.attach(2);
   pinMode(PresencePin, INPUT);
+  pinMode(Zumbador, OUTPUT);
 
   Serial.begin(115200);
   Serial.print("Conectando a: ");
@@ -117,7 +119,7 @@ void loop()
     if (stat == 49) {
       servoMotor.write(0);
     } else if (stat == 48) {
-      servoMotor.write(180);
+      servoMotor.write(90);
     }
     Serial.println("Este es el dato:");
     Serial.println(stat);
@@ -130,15 +132,15 @@ void loop()
 
   if (digitalRead(SmokePin) == HIGH) {
     state = 1;
-    Serial.println("Motion detected!");
-    delay(1000);
+    tone(Zumbador, 440, 3000);
+    Serial.println("Smoke detected!");
   } else {
     state = 0;
     delay(1000);
   }
 
-Serial.print("Detector de presencia: ");
-Serial.println(state);
+  Serial.print("Detector de presencia: ");
+  Serial.println(state);
   Serial.print("Obteniendo URL: ");
   Serial.println(urlPresence);
   //Creamos la peticion al servidor
@@ -165,7 +167,7 @@ Serial.println(state);
 
   Serial.print("Detector de humo: ");
   Serial.println(stateSmoke);
-  
+
   client.print(String("GET ") + urlSmoke + datoSmoke + stateSmoke + datoPlace + place + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Coneccion: Cerrada\r\n\r\n");
