@@ -33,7 +33,6 @@ void loop()
 {
   int err;
   int status;
-  float temp, hum;
   String place = "room";
   int state;
  
@@ -46,7 +45,7 @@ void loop()
     return;
   }
   
-  String urlLight = "/IntelliHome/operations/getLightStatus.php?place=garage";
+  String urlLight = "/IntelliHome/operations/getLightStatus.php?place=room";
   
 //Luz
 
