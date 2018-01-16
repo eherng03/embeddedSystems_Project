@@ -13,7 +13,7 @@ void setup() {
 
   pinMode(LED, OUTPUT);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.print("Conectando a: ");
   Serial.println(ssid);
   WiFi.begin(ssid, password);
@@ -33,7 +33,7 @@ void loop()
   int err;
   int status;
   float temp, hum;
-  String place = "bath";
+  String place = "bathroom";
   int state;
 
   Serial.print("conectando a: ");
@@ -45,7 +45,7 @@ void loop()
     return;
   }
 
-  String urlLight = "/IntelliHome/operations/getLightStatus.php?place=garage";
+  String urlLight = "/IntelliHome/operations/getLightStatus.php?place=bathroom";
 
   //Luz
 
@@ -82,7 +82,7 @@ void loop()
     return;
   }
 
-  client.flush();
+ // client.flush();
 
   Serial.print("Estado del cliente: " + client.connected());
   if ((err = dht11.read(hum, temp)) == 0)
