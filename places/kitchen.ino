@@ -13,12 +13,14 @@ const int LED = 16;
 //DHT11 dht11(D4);
 int DOPin = 4;
 DHT dht;
+int Zumbador = 14;
 
 void setup() {
 
   pinMode(LED, OUTPUT);
   pinMode(DOPin, INPUT);
   dht.setup(D4);
+   pinMode(Zumbador, OUTPUT);
 
   Serial.begin(9600);
   Serial.print("Conectando a: ");
@@ -105,9 +107,12 @@ void loop()
 
 //Humo
   if (digitalRead(DOPin) ==HIGH){
-   state = 0;
+   state = 1;
+    tone(Zumbador, 440, 3000);
+    Serial.println("Smoke detected!");
   }else {
-     state = 1;
+     state = 0;
+     delay(1000);
   }
 
   if (!client.connect(host, httpPort)) {
