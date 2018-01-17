@@ -111,8 +111,13 @@ void loop()
     tone(Zumbador, 440, 3000);
     Serial.println("Smoke detected!");
   }else {
-     state = 0;
-     delay(1000);
+        tone(Zumbador, 440);
+    delay(3000);
+    noTone(Zumbador);
+    Serial.println("Smoke detected!");
+
+    state = 0;
+    delay(1000);
   }
 
   if (!client.connect(host, httpPort)) {
