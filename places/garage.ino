@@ -43,7 +43,6 @@ void loop()
   String place = "garage";
   int state;
   int stateSmoke;
-
   Serial.print("conectando a: ");
   Serial.println(host);
   WiFiClient client;
@@ -132,9 +131,13 @@ void loop()
 
   if (digitalRead(SmokePin) == HIGH) {
     state = 1;
-    tone(Zumbador, 440, 3000);
-    Serial.println("Smoke detected!");
+   Serial.println("Smoke detected!");
   } else {
+     tone(Zumbador, 440);
+    delay(3000);
+    noTone(Zumbador);
+    Serial.println("Smoke detected!");
+
     state = 0;
     delay(1000);
   }
