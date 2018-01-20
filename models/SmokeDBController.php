@@ -6,7 +6,7 @@
 	class SmokeDBController{
 		private static $instance;
 		private function __construct(){}
-		
+
 		public static function getInstance(){
 			if (!self::$instance instanceof self){
 				self::$instance = new self;
@@ -21,7 +21,7 @@
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("UPDATE smoke SET status = $state, date = CURRENT_TIMESTAMP WHERE place = '$place'");
+			$query = $connection->query("INSERT smoke SET status = $state, date = CURRENT_TIMESTAMP WHERE place = '$place'");
 			return $query;
 		}
 
