@@ -21,7 +21,7 @@
 			$dbManager = DBManager::getInstance();
 			$connection = $dbManager->getConnection();
 
-			$query = $connection->query("INSERT smoke SET status = $state, date = CURRENT_TIMESTAMP WHERE place = '$place'");
+			$query = $connection->query("INSERT INTO smoke SET status = $state, date = CURRENT_TIMESTAMP WHERE place = '$place'");
 			return $query;
 		}
 
