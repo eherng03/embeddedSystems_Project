@@ -9,17 +9,17 @@ const char* host = "192.168.43.247";
 
 Servo servoMotor;
 const int LED = 16;
-int SmokePin = 5;
-int PresencePin = 4;
-int Zumbador = 14;
+int smokePin = 5;
+int presencePin = 4;
+int zumbador = 14;
 
 void setup() {
 
-  pinMode(SmokePin, INPUT);
+  pinMode(smokePin, INPUT);
   pinMode(LED, OUTPUT);
   servoMotor.attach(2);
-  pinMode(PresencePin, INPUT);
-  pinMode(Zumbador, OUTPUT);
+  pinMode(presencePin, INPUT);
+  pinMode(zumbador, OUTPUT);
 
   Serial.begin(115200);
   Serial.print("Conectando a: ");
@@ -54,7 +54,6 @@ void loop()
 
   String url = "/IntelliHome/operations/getDoorStatus.php?place=garage";
   String urlLight = "/IntelliHome/operations/getLightStatus.php?place=garage";
-  String urlPresence = "/IntelliHome/operations/changePresence.php?";
   String urlSmoke = "/IntelliHome/operations/changeSmoke.php?";
 
   String datoPresence = "state=";
@@ -129,59 +128,76 @@ void loop()
 
   Serial.print("Estado del cliente: " + client.connected());
 
-  if (digitalRead(SmokePin) == HIGH) {
-    stateSmoke = 0;
+  //Smoke
+  if (digitalRead(smokePin) == HIGH) {
+    state = 0;
     Serial.print("No hay humo");
   } else {
     Serial.print("Hay humo");
-    tone(Zumbador, 440);
+    tone(zumbador, 440);
     delay(3000);
-    noTone(Zumbador);
-    stateSmoke = 1;
+    noTone(zumbador);
+    state = 1;
+  }
+
+  if (state == 1) {
+    if (!client.connect(host, httpPort)) {
+      Serial.println("Conexion Fallida");
+      return;
+    }
+
+    client.flush();
+    Serial.print("Estado del cliente: " + client.connected());
 
 
-    Serial.print("Detector de humo: ");
-    Serial.println(stateSmoke);
-
-    client.print(String("GET ") + urlSmoke + datoSmoke + stateSmoke + datoPlace + place + " HTTP/1.1\r\n" +
+    Serial.print("Obteniendo URL: ");
+    Serial.println(urlSmoke);
+    //Creamos la peticion al servidor
+    client.print(String("GET ") + urlSmoke + datoSmoke + state + datoPlace + place + " HTTP/1.1\r\n" +
                  "Host: " + host + "\r\n" +
                  "Coneccion: Cerrada\r\n\r\n");
 
-    unsigned long timeout4 = millis();
+    unsigned long timeout3 = millis();
     while (client.available() == 0) {
-      if (millis() - timeout4 > 5000) {
-        Serial.println(">>> Se acabo el tiempo de espera !");
+      if (millis() - timeout3 > 5000) {
+        Serial.println(">>> Se acabo el tiempo de espera humo !");
         client.stop();
         return;
       }
     }
+
+    //Imprimimos lo que nos devuelve el servidor
+    while (client.available()) {
+      String line = client.readStringUntil('\r');
+      Serial.print(line);
+    }
   }
-  
+
   client.flush();
 
+  //Presence
   Serial.print("Estado del cliente: " + client.connected());
-
-  if (digitalRead(PresencePin) == HIGH) {
+  if (digitalRead(presencePin) == HIGH) {
     state = 1;
-    Serial.println("Presencia detectada");
+    Serial.println("Motion detected!");
+    delay(1000);
   } else {
-    Serial.println("No presencia");
-
     state = 0;
     delay(1000);
   }
 
+
+  String urlPresence = "/IntelliHome/operations/changePresence.php?";
   Serial.print("Obteniendo URL: ");
   Serial.println(urlPresence);
   //Creamos la peticion al servidor
-  client.println(String("GET ") + urlPresence + datoPresence + state + datoPlace + place + " HTTP/1.1\r\n" +
-                 "Host: " + host + "\r\n" +
-                 "Coneccion: Cerrada\r\n\r\n");
-
-  unsigned long timeout3 = millis();
+  client.print(String("GET ") + urlPresence + datoPresence + state + datoPlace + place + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "Coneccion: Cerrada\r\n\r\n");
+  unsigned long timeout4 = millis();
   while (client.available() == 0) {
-    if (millis() - timeout3 > 5000) {
-      Serial.println(">>> Se acabo el tiempo de espera presencia !");
+    if (millis() - timeout4 > 5000) {
+      Serial.println(">>> Se acabo el tiempo de espera !");
       client.stop();
       return;
     }
@@ -189,7 +205,7 @@ void loop()
 
   client.flush();
   Serial.println();
-  Serial.println("Cerrando ConexiÃ³n");
+  Serial.println("Cerrando Conexión");
   delay(3000);
 }
 
