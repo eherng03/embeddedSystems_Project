@@ -1,4 +1,4 @@
-#include <DHT11.h>
+
 #include <ESP8266WiFi.h>
 #include <Servo.h>
 
@@ -142,16 +142,14 @@ void loop()
   Serial.print("Estado del cliente: " + client.connected());
 
   if (digitalRead(SmokePin) == HIGH) {
-    stateSmoke  = 1;
-    tone(Zumbador, 440, 3000);
-    Serial.println("Smoke detected!");
-  } else {tone(Zumbador, 440);
+    stateSmoke = 0;
+    Serial.print("No hay humo");
+  } else {
+    Serial.print("Hay humo");
+    tone(Zumbador, 440);
     delay(3000);
     noTone(Zumbador);
-    Serial.println("NO HAY HUMO");
-
-    stateSmoke = 0;
-    delay(1000);
+    stateSmoke = 1;
   }
 
 
@@ -173,7 +171,7 @@ void loop()
         return;
       }
     }
-  }
+  } 
   
 //Presencia
 
