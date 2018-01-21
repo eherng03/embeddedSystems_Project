@@ -2,3 +2,4 @@
 -SmokeDBController instruccion de insert que antes era update esta mal.
 -Me parece que la consulta de insert de PresenceDBController tabien esta mal
 o al menos le falta el cierre minimo.
+-Zumbador cocina no chufla al detectar gas.
