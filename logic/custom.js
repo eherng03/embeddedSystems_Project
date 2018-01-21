@@ -61,21 +61,13 @@ LIGHT
 	        $.ajax({
 	            url: "operations/changeLight.php",
 	            type: 'POST',
-	            data: {"state": "1", "place": "room"},
-	            
-	            success: function(data){
-	                alert(data);
-	            }
+	            data: {"state": "1", "place": "room"}
         	});
 	    }else{
 	    	$.ajax({
 	            url: "operations/changeLight.php",
 	            type: 'POST',
-	            data: {"state": "0", "place": "room"},
-	            
-	            success: function(data){
-	                alert("Se ha apagado la luz");
-	            }
+	            data: {"state": "0", "place": "room"}
         	});
 	    }
 	});
@@ -86,21 +78,13 @@ LIGHT
 	        $.ajax({
 	            url: "operations/changeLight.php",
 	            type: 'POST',
-	            data: {"state": "1", "place": "bathroom"},
-	            
-	            success: function(data){
-	                alert(data);
-	            }
+	            data: {"state": "1", "place": "bathroom"}
         	});
 	    }else{
 	    	$.ajax({
 	            url: "operations/changeLight.php",
 	            type: 'POST',
-	            data: {"state": "0", "place": "bathroom"},
-	            
-	            success: function(data){
-	                alert("Se ha apagado la luz");
-	            }
+	            data: {"state": "0", "place": "bathroom"}
         	});
 	    }
 	});
@@ -111,21 +95,13 @@ LIGHT
 	        $.ajax({
 	            url: "operations/changeLight.php",
 	            type: 'POST',
-	            data: {"state": "1", "place": "garage"},
-	            
-	            success: function(data){
-	                alert(data);
-	            }
+	            data: {"state": "1", "place": "garage"}
         	});
 	    }else{
 	    	$.ajax({
 	            url: "operations/changeLight.php",
 	            type: 'POST',
-	            data: {"state": "0", "place": "garage"},
-	            
-	            success: function(data){
-	                alert("Se ha apagado la luz");
-	            }
+	            data: {"state": "0", "place": "garage"}
         	});
 	    }
 	});
@@ -136,21 +112,13 @@ LIGHT
 	        $.ajax({
 	            url: "operations/changeLight.php",
 	            type: 'POST',
-	            data: {"state": "1", "place": "kitchen"},
-	            
-	            success: function(data){
-	                alert(data);
-	            }
+	            data: {"state": "1", "place": "kitchen"}
         	});
 	    }else{
 	    	$.ajax({
 	            url: "operations/changeLight.php",
 	            type: 'POST',
-	            data: {"state": "0", "place": "kitchen"},
-	            
-	            success: function(data){
-	                alert("Se ha apagado la luz");
-	            }
+	            data: {"state": "0", "place": "kitchen"}
         	});
 	    }
 	});
@@ -179,21 +147,13 @@ DOOR
 	        $.ajax({
 	            url: "operations/changeDoor.php",
 	            type: 'POST',
-	            data: {"state": "1", "place": "garage"},
-	            
-	            success: function(data){
-	                alert(data);
-	            }
+	            data: {"state": "1", "place": "garage"}
         	});
 	    }else{
 	    	$.ajax({
 	            url: "operations/changeDoor.php",
 	            type: 'POST',
-	            data: {"state": "0", "place": "garage"},
-	            
-	            success: function(data){
-	                alert("Se ha cerrado la puerta");
-	            }
+	            data: {"state": "0", "place": "garage"}
         	});
 	    }
 	});
