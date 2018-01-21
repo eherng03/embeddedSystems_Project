@@ -1,4 +1,4 @@
--Configurar wifi Raspberry.
+-Configurar red wifi Raspberry.
 -SmokeDBController instruccion de insert que antes era update esta mal.
 -Me parece que la consulta de insert de PresenceDBController tabien esta mal
 o al menos le falta el cierre minimo.
