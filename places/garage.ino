@@ -70,7 +70,7 @@ void loop()
   unsigned long timeout1 = millis();
   while (client.available() == 0) {
     if (millis() - timeout1 > 5000) {
-      Serial.println(">>> Se acabo el tiempo de espera puerta !");
+      Serial.println(">>> Se acabo el tiempo de espera luz !");
       client.stop();
       return;
     }
@@ -130,20 +130,47 @@ void loop()
   Serial.print("Estado del cliente: " + client.connected());
 
   if (digitalRead(SmokePin) == HIGH) {
-    state = 1;
-   Serial.println("Smoke detected!");
+    stateSmoke = 0;
+    Serial.print("No hay humo");
   } else {
-     tone(Zumbador, 440);
+    Serial.print("Hay humo");
+    tone(Zumbador, 440);
     delay(3000);
     noTone(Zumbador);
-    Serial.println("Smoke detected!");
+    stateSmoke = 1;
+
+
+    Serial.print("Detector de humo: ");
+    Serial.println(stateSmoke);
+
+    client.print(String("GET ") + urlSmoke + datoSmoke + stateSmoke + datoPlace + place + " HTTP/1.1\r\n" +
+                 "Host: " + host + "\r\n" +
+                 "Coneccion: Cerrada\r\n\r\n");
+
+    unsigned long timeout4 = millis();
+    while (client.available() == 0) {
+      if (millis() - timeout4 > 5000) {
+        Serial.println(">>> Se acabo el tiempo de espera !");
+        client.stop();
+        return;
+      }
+    }
+  }
+  
+  client.flush();
+
+  Serial.print("Estado del cliente: " + client.connected());
+
+  if (digitalRead(PresencePin) == HIGH) {
+    state = 1;
+    Serial.println("Presencia detectada");
+  } else {
+    Serial.println("No presencia");
 
     state = 0;
     delay(1000);
   }
 
-  Serial.print("Detector de presencia: ");
-  Serial.println(state);
   Serial.print("Obteniendo URL: ");
   Serial.println(urlPresence);
   //Creamos la peticion al servidor
@@ -154,36 +181,13 @@ void loop()
   unsigned long timeout3 = millis();
   while (client.available() == 0) {
     if (millis() - timeout3 > 5000) {
-      Serial.println(">>> Se acabo el tiempo de espera puerta !");
+      Serial.println(">>> Se acabo el tiempo de espera presencia !");
       client.stop();
       return;
     }
   }
 
   client.flush();
-
-  if (digitalRead(SmokePin) == HIGH) {
-    stateSmoke = 0;
-  } else {
-    stateSmoke = 1;
-  }
-
-  Serial.print("Detector de humo: ");
-  Serial.println(stateSmoke);
-
-  client.print(String("GET ") + urlSmoke + datoSmoke + stateSmoke + datoPlace + place + " HTTP/1.1\r\n" +
-               "Host: " + host + "\r\n" +
-               "Coneccion: Cerrada\r\n\r\n");
-
-  unsigned long timeout4 = millis();
-  while (client.available() == 0) {
-    if (millis() - timeout4 > 5000) {
-      Serial.println(">>> Se acabo el tiempo de espera !");
-      client.stop();
-      return;
-    }
-  }
-
   Serial.println();
   Serial.println("Cerrando ConexiÃ³n");
   delay(3000);
