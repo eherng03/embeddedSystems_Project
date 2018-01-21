@@ -43,6 +43,8 @@ void loop()
   int status;
   float temp, hum;
   String place = "kitchen";
+  String stringState = "state=";
+  String stringPlace = "&place=";
   int state;
 
   Serial.print("conectando a: ");
@@ -95,31 +97,56 @@ void loop()
   client.flush();
 
   Serial.print("Estado del cliente: " + client.connected());
-    temp = dht.getTemperature();
-    hum = dht.getHumidity();
-    Serial.print("Temperatura: ");
-    Serial.print(temp);
-    Serial.print(" Humedad: ");
-    Serial.print(hum);
-    Serial.print(place);
-    Serial.println();
-  
+     
 
 //Humo
   if (digitalRead(DOPin) ==HIGH){
-   state = 1;
-    tone(Zumbador, 440, 3000);
-    Serial.println("Smoke detected!");
-  }else {
-        tone(Zumbador, 440);
+    state = 0;
+    Serial.print("No hay humo");
+  } else {
+    Serial.print("Hay humo");
+    tone(Zumbador, 440);
     delay(3000);
     noTone(Zumbador);
-    Serial.println("Smoke detected!");
-
-    state = 0;
-    delay(1000);
+    state = 1;
   }
 
+  if(state == 1){
+    if (!client.connect(host, httpPort)) {
+      Serial.println("Coneccion Fallida");
+      return;
+    }
+    
+    client.flush();
+  
+    Serial.print("Estado del cliente: " + client.connected());
+    
+    
+    Serial.print("Obteniendo URL: ");
+    Serial.println(urlSmoke);
+    //Creamos la peticion al servidor
+    client.print(String("GET ") + urlSmoke + stringState + state + stringPlace + place + " HTTP/1.1\r\n" +
+    "Host: " + host + "\r\n" +
+    "Coneccion: Cerrada\r\n\r\n");
+  
+    unsigned long timeout2 = millis();
+    while (client.available() == 0) {
+      if (millis() - timeout2 > 5000) {
+        Serial.println(">>> Se acabo el tiempo de espera humo !");
+        client.stop();
+        return;
+      }
+    }
+  
+    //Imprimimos lo que nos devuelve el servidor
+    while (client.available()) {
+      String line = client.readStringUntil('\r');
+      Serial.print(line);
+    }
+  }
+
+
+//Humedad y temperatura
   if (!client.connect(host, httpPort)) {
     Serial.println("Coneccion Fallida");
     return;
@@ -129,30 +156,15 @@ void loop()
 
   Serial.print("Estado del cliente: " + client.connected());
   
-  String dato1 = "state=";
-  String dato3 = "&place=";
-  Serial.print("Obteniendo URL: ");
-  Serial.println(urlSmoke);
-  //Creamos la peticion al servidor
-  client.print(String("GET ") + urlSmoke + dato1 + state + dato3 + place + " HTTP/1.1\r\n" +
-  "Host: " + host + "\r\n" +
-  "Coneccion: Cerrada\r\n\r\n");
-
-  unsigned long timeout2 = millis();
-  while (client.available() == 0) {
-    if (millis() - timeout2 > 5000) {
-      Serial.println(">>> Se acabo el tiempo de espera humo !");
-      client.stop();
-      return;
-    }
-  }
-
-  //Imprimimos lo que nos devuelve el servidor
-  while (client.available()) {
-    String line = client.readStringUntil('\r');
-    Serial.print(line);
-  }
-
+  temp = dht.getTemperature();
+  hum = dht.getHumidity();
+  Serial.print("Temperatura: ");
+  Serial.print(temp);
+  Serial.print(" Humedad: ");
+  Serial.print(hum);
+  Serial.print(place);
+  Serial.println();
+  
   String urlTemp = "/IntelliHome/operations/changeTemperature.php?";
   String urlHum = "/IntelliHome/operations/changeHumidity.php?";
   String datoT = "temp=";
@@ -160,10 +172,10 @@ void loop()
   Serial.print("Obteniendo URL: ");
   Serial.println(urlTemp);
   //Creamos la peticion al servidor
-  client.print(String("GET ") + urlTemp + datoT + temp + dato3 + place + " HTTP/1.1\r\n" +
+  client.print(String("GET ") + urlTemp + datoT + temp + stringPlace + place + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Coneccion: Cerrada\r\n\r\n");
-  client.print(String("GET ") + urlHum + datoH + hum + dato3 + place + " HTTP/1.1\r\n" +
+  client.print(String("GET ") + urlHum + datoH + hum + stringPlace + place + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Coneccion: Cerrada\r\n\r\n");
   unsigned long timeout3 = millis();
@@ -185,3 +197,4 @@ void loop()
   Serial.println("Cerrando Conexión");
   delay(3000);
 }
+  
