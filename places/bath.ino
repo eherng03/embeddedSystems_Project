@@ -82,7 +82,7 @@ void loop()
     return;
   }
 
- // client.flush();
+ client.flush();
 
   Serial.print("Estado del cliente: " + client.connected());
   if ((err = dht11.read(hum, temp)) == 0)
