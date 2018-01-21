@@ -41,7 +41,7 @@ void loop()
   int err;
   int status;
   String place = "garage";
-  int state;
+  int statePresencia;
   int stateSmoke;
   Serial.print("conectando a: ");
   Serial.println(host);
@@ -52,7 +52,7 @@ void loop()
     return;
   }
 
-  String url = "/IntelliHome/operations/getDoorStatus.php?place=garage";
+  String urlDoor = "/IntelliHome/operations/getDoorStatus.php?place=garage";
   String urlLight = "/IntelliHome/operations/getLightStatus.php?place=garage";
   String urlPresence = "/IntelliHome/operations/changePresence.php?";
   String urlSmoke = "/IntelliHome/operations/changeSmoke.php?";
@@ -61,6 +61,8 @@ void loop()
   String datoPlace = "&place=";
   String datoSmoke = "state=";
 
+
+//Luz
 
   Serial.print("Obteniendo URL: ");
   Serial.println(urlLight);
@@ -89,6 +91,8 @@ void loop()
   }
 
 
+//Puerta
+
   if (!client.connect(host, httpPort)) {
     Serial.println("Coneccion Fallida");
     return;
@@ -99,9 +103,9 @@ void loop()
   Serial.print("Estado del cliente: " + client.connected());
 
   Serial.print("Obteniendo URL: ");
-  Serial.println(url);
+  Serial.println(urlDoor);
   //Creamos la peticion al servidor
-  client.println(String("GET ") + url);
+  client.println(String("GET ") + urlDoor);
 
   unsigned long timeout2 = millis();
   while (client.available() == 0) {
@@ -125,24 +129,38 @@ void loop()
 
   }
 
+
+//Humo
+
+  if (!client.connect(host, httpPort)) {
+      Serial.println("Coneccion Fallida");
+      return;
+    }
+
   client.flush();
 
   Serial.print("Estado del cliente: " + client.connected());
 
   if (digitalRead(SmokePin) == HIGH) {
-    stateSmoke = 0;
-    Serial.print("No hay humo");
-  } else {
-    Serial.print("Hay humo");
-    tone(Zumbador, 440);
+    stateSmoke  = 1;
+    tone(Zumbador, 440, 3000);
+    Serial.println("Smoke detected!");
+  } else {tone(Zumbador, 440);
     delay(3000);
     noTone(Zumbador);
-    stateSmoke = 1;
+    Serial.println("NO HAY HUMO");
+
+    stateSmoke = 0;
+    delay(1000);
+  }
+
 
 
     Serial.print("Detector de humo: ");
     Serial.println(stateSmoke);
 
+    //solo manda los datos cuando detecta humo, si no se pierde tiempo
+  if(stateSmoke == 1){
     client.print(String("GET ") + urlSmoke + datoSmoke + stateSmoke + datoPlace + place + " HTTP/1.1\r\n" +
                  "Host: " + host + "\r\n" +
                  "Coneccion: Cerrada\r\n\r\n");
@@ -157,39 +175,47 @@ void loop()
     }
   }
   
+//Presencia
+
+  if (!client.connect(host, httpPort)) {
+      Serial.println("Coneccion Fallida");
+      return;
+  }
   client.flush();
 
   Serial.print("Estado del cliente: " + client.connected());
 
   if (digitalRead(PresencePin) == HIGH) {
-    state = 1;
+    statePresencia = 1;
     Serial.println("Presencia detectada");
   } else {
     Serial.println("No presencia");
 
-    state = 0;
+    statePresencia = 0;
     delay(1000);
   }
 
-  Serial.print("Obteniendo URL: ");
-  Serial.println(urlPresence);
-  //Creamos la peticion al servidor
-  client.println(String("GET ") + urlPresence + datoPresence + state + datoPlace + place + " HTTP/1.1\r\n" +
-                 "Host: " + host + "\r\n" +
-                 "Coneccion: Cerrada\r\n\r\n");
+  if(statePresencia == 1){
+    Serial.print("Obteniendo URL: ");
+    Serial.println(urlPresence);
+    //Creamos la peticion al servidor
+    client.println(String("GET ") + urlPresence + datoPresence + statePresencia + datoPlace + place + " HTTP/1.1\r\n" +
+                   "Host: " + host + "\r\n" +
+                   "Coneccion: Cerrada\r\n\r\n");
 
-  unsigned long timeout3 = millis();
-  while (client.available() == 0) {
-    if (millis() - timeout3 > 5000) {
-      Serial.println(">>> Se acabo el tiempo de espera presencia !");
-      client.stop();
-      return;
+    unsigned long timeout3 = millis();
+    while (client.available() == 0) {
+      if (millis() - timeout3 > 5000) {
+        Serial.println(">>> Se acabo el tiempo de espera presencia !");
+        client.stop();
+        return;
+      }
     }
   }
-
+  
   client.flush();
   Serial.println();
-  Serial.println("Cerrando ConexiÃ³n");
+  Serial.println("Cerrando Conexión");
   delay(3000);
 }
 
