@@ -5,3 +5,7 @@
 <p>
   IntelliHome es un proyecto que busca la comodidad del usuario, permitiéndole controlar su casa remotamente desde un dispositivo movil u ordenador. Usando placas de Arduino, y tecnologia web conseguimos este objetivo. Permite encender y apagar las luces de toda tu casa, abrir y cerrar la puerta del garaje, y controlar ciertos datos importantes sobre presencia, humedad, temperatura y humo que pueden producirse.
 </p>
+<p>
+  Puedes ver la web del proyecto en este enlace:
+  https://eherng03.github.io/embeddedSystems_Project/
+</p>
